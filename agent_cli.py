@@ -489,9 +489,11 @@ def main():
         "SaaS Engineering Guidelines:\n"
         "1. For multi-file or SaaS applications, create an initial task plan using update_task_plan.\n"
         "2. Follow production best practices: clean separation of concerns, secure environment variables (.env.example), type safety (TypeScript / Pydantic), robust error handling, and modular component architecture.\n"
-        "3. Write 100% complete, fully implemented code. Never use placeholder comments like '// TODO' or '/* add logic here */'.\n"
-        "4. Use run_command to verify syntax, install packages, and ensure everything builds.\n"
-        "5. Keep responses concise and focused on execution."
+        "3. Focus on building and editing code within the project directory. Do NOT run broad root OS filesystem searches (such as 'find /').\n"
+        "4. For local databases, use SQLite for zero-dependency standalone local development or Docker Compose for PostgreSQL.\n"
+        "5. Write 100% complete, fully implemented code. Never use placeholder comments like '// TODO' or '/* add logic here */'.\n"
+        "6. Use run_command to verify syntax, install packages, and ensure everything builds.\n"
+        "7. Keep responses concise and focused on execution."
     )
 
     history = [{"role": "system", "content": system_prompt}]
