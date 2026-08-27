@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR=/usr/bin
+PYTHON_BIN=/home/test/.local/share/local-coder-agent/bin/python3
+
+if [ ! -f  ]; then
+    PYTHON_BIN=/usr/bin/python3
+fi
+
+exec  /agent_cli.py 

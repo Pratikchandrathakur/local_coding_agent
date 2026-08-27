@@ -1,0 +1,23 @@
+# Model weights (large binary files)
+models/*.gguf
+models/*.bin
+models/*.part
+
+# Environment and secrets
+.env
+*.log
+
+# Python cache & virtualenvs
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Agent local histories
+.local_coder_history
+.aider*
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,41 @@
+services:
+  llm-server:
+    image: ghcr.io/ggml-org/llama.cpp:server-cuda
+    container_name: local-coder-server
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8080}:8080"
+    volumes:
+      - ./models:/models
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    command: >
+      -m /models/${MODEL_FILE}
+      --alias ${MODEL_ALIAS:-local-coder}
+      -ngl ${GPU_LAYERS:-99}
+      -c ${CONTEXT_SIZE:-32768}
+      -fa ${FLASH_ATTN:-on}
+      -ctk ${KV_CACHE_QUANT:-f16}
+      -ctv ${KV_CACHE_QUANT:-f16}
+      --temp ${TEMPERATURE:-0.6}
+      --top-p ${TOP_P:-0.95}
+      --top-k ${TOP_K:-20}
+      --jinja
+      --chat-template-file /models/chat_template.jinja
+      ${MMPROJ_FILE:+--mmproj}${MMPROJ_FILE:+ /models/}${MMPROJ_FILE}
+      ${EXTRA_ARGS}
+      --host 0.0.0.0
+      --port 8080
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 300s
