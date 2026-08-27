@@ -1,6 +1,8 @@
 #!/home/test/.local/share/local-coder-agent/bin/python3
 import os
 import sys
+
+os.environ["PROMPT_TOOLKIT_NO_CPR"] = "1"
 import json
 import time
 import re
@@ -507,8 +509,7 @@ def main():
             user_input = prompt(
                 "\ncoder > ",
                 history=FileHistory(str(hist_file)),
-                auto_suggest=AutoSuggestFromHistory(),
-                enable_cpr=False
+                auto_suggest=AutoSuggestFromHistory()
             ).strip()
 
             if not user_input:
