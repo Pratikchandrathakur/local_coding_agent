@@ -80,7 +80,22 @@ fi
 succ "uv is ready: $(uv --version)"
 
 # ------------------------------------------------------------------------------
-# 4. Virtual Environment & Agent Dependencies
+# 4. Native Linux Node.js & npm (LTS v22)
+# ------------------------------------------------------------------------------
+if ! "${HOME}/.local/bin/node" --version >/dev/null 2>&1 && ! /usr/bin/node --version >/dev/null 2>&1; then
+    info "Installing native Linux Node.js LTS v22..."
+    mkdir -p "${HOME}/.local/share/node" "${HOME}/.local/bin"
+    curl -fsSL https://nodejs.org/dist/v22.14.0/node-v22.14.0-linux-x64.tar.xz | tar -xJ --strip-components=1 -C "${HOME}/.local/share/node"
+    ln -sf "${HOME}/.local/share/node/bin/node" "${HOME}/.local/bin/node"
+    ln -sf "${HOME}/.local/share/node/bin/npm" "${HOME}/.local/bin/npm"
+    ln -sf "${HOME}/.local/share/node/bin/npx" "${HOME}/.local/bin/npx"
+    succ "Node.js v22 LTS installed."
+else
+    succ "Node.js is already installed."
+fi
+
+# ------------------------------------------------------------------------------
+# 5. Virtual Environment & Agent Dependencies
 # ------------------------------------------------------------------------------
 VENV_DIR="${HOME}/.local/share/local-coder-agent"
 info "Setting up agent virtual environment in ${VENV_DIR}..."

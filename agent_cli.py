@@ -332,7 +332,10 @@ def execute_tool(name: str, args: Dict[str, Any]) -> str:
         elif name == "run_command":
             cmd = args["command"]
             console.print(Panel(f"[bold yellow]$ {cmd}[/]", border_style="yellow"))
-            proc = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=180)
+            env = os.environ.copy()
+            home_bin = str(Path.home() / ".local/bin")
+            env["PATH"] = f"{home_bin}:/usr/local/bin:/usr/bin:/bin:{env.get('PATH', '')}"
+            proc = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=180, env=env)
             out = proc.stdout.strip()
             err = proc.stderr.strip()
             res = []
@@ -504,7 +507,8 @@ def main():
             user_input = prompt(
                 "\ncoder > ",
                 history=FileHistory(str(hist_file)),
-                auto_suggest=AutoSuggestFromHistory()
+                auto_suggest=AutoSuggestFromHistory(),
+                enable_cpr=False
             ).strip()
 
             if not user_input:
